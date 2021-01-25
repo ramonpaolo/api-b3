@@ -1,6 +1,42 @@
 {
     "data": [
         {
+            "ticker": "TAEE4",
+            "nome": "TAESA",
+            "logo": "https://cdn-statusinvest.azureedge.net/img/company/cover/480.jpg",
+            "info": "TAESA (Transportes A\u00e9reos Ejecutivos) era uma companhia a\u00e9rea de baixo custo com sede no N\u00ba 27 da Zona C do Hangar, no Aeroporto Internacional da Cidade do M\u00e9xico, na Cidade do M\u00e9xico.\n\n\n== Hist\u00f3ria ==\nA companhia a\u00e9rea, de propriedade de empres\u00e1rio legalmente representado por Alberto Abed Schekaiban, foi fundada em 27 de abril de 1988, operando aeronaves executivas executivas e, posteriormente, em 1989 recebeu seu primeiro Boeing 727-100 que foi utilizado para lan\u00e7ar servi\u00e7os regulares de passageiros.",
+            "valor_cota": "45,00",
+            "dy": "0,13",
+            "oscilacao_cota": "-1,12%",
+            "preco_min_cota": "32.30",
+            "preco_max_cota": "32.34",
+            "ultimo_pagamento": "04/01/2021"
+        },
+        {
+            "ticker": "BIDI4",
+            "nome": "BANCO INTER",
+            "logo": "https://cdn-statusinvest.azureedge.net/img/company/cover/325.jpg",
+            "info": "Banco Inter, antigo Banco Intermedium, \u00e9 um banco m\u00faltiplo brasileiro sediado na cidade de Belo Horizonte. Caracteriza-se por ser um dos primeiros bancos digitais do Brasil, e pela aus\u00eancia de taxas sobre servi\u00e7os b\u00e1sicos. Atualmente \u00e9 patrocinador-master do S\u00e3o Paulo Futebol Clube.",
+            "valor_cota": "45,00",
+            "dy": "0,13",
+            "oscilacao_cota": "0,36%",
+            "preco_min_cota": "32.30",
+            "preco_max_cota": "32.34",
+            "ultimo_pagamento": "04/01/2021"
+        },
+        {
+            "ticker": "TAEE3",
+            "nome": "TAESA",
+            "logo": "https://cdn-statusinvest.azureedge.net/img/company/cover/480.jpg",
+            "info": "TAESA (Transportes A\u00e9reos Ejecutivos) era uma companhia a\u00e9rea de baixo custo com sede no N\u00ba 27 da Zona C do Hangar, no Aeroporto Internacional da Cidade do M\u00e9xico, na Cidade do M\u00e9xico.\n\n\n== Hist\u00f3ria ==\nA companhia a\u00e9rea, de propriedade de empres\u00e1rio legalmente representado por Alberto Abed Schekaiban, foi fundada em 27 de abril de 1988, operando aeronaves executivas executivas e, posteriormente, em 1989 recebeu seu primeiro Boeing 727-100 que foi utilizado para lan\u00e7ar servi\u00e7os regulares de passageiros.",
+            "valor_cota": "10,86",
+            "dy": "9,86",
+            "oscilacao_cota": "-0,82%",
+            "preco_min_cota": "32.30",
+            "preco_max_cota": "32.34",
+            "ultimo_pagamento": "04/01/2021"
+        },
+        {
             "ticker": "EGIE3",
             "nome": "ENGIE BRASIL",
             "logo": "https://cdn-statusinvest.azureedge.net/img/company/cover/473.jpg",
@@ -27,7 +63,7 @@
         {
             "ticker": "ENBR3",
             "nome": "EDP Brasil",
-            "logo": "https://cdn-statusinvest.azureedge.net/img/company/cover/480.jpg",
+            "logo": "https://ri.edp.com.br/wp-content/themes/mziq_edp_ri/img/smalllogo3.png",
             "info": "A EDP Brasil \u00e9 uma das maiores concession\u00e1rias de energia el\u00e9trica do Brasil, \u00e9 subsidi\u00e1ria da EDP - Energias de Portugal no Brasil. A empresa foi fundada em 1996 em S\u00e3o Paulo. Por meio de suas subsidi\u00e1rias a empresa gera, distribui e comercializa energia el\u00e9trica em nove estados brasileiros e. No segmento de gera\u00e7\u00e3o, representando 2,3 GW de capacidade instalada.",
             "valor_cota": "19,46",
             "dy": "2,39",

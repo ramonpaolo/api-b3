@@ -17,6 +17,21 @@ def route():
         return {
             'error': "ticker value is null"
         }
+    elif request.args.get('ticker') == "all":
+        infoActions = []
+        with open("data.json") as file:
+            dataJson = json.load(file)
+       
+        for x in dataJson["data"]:
+            print(x)
+
+            url = requests.get(
+                f"https://statusinvest.com.br/acoes/{x['ticker']}")
+            nav = BeautifulSoup(url.text, "html5lib")
+            infoActions.append({"nome": x["nome"], "logo": x["logo"], "info": x["info"], "ticker": x["ticker"], "valor_cota": nav.find('strong').text,
+                                "dy": nav.find_all("strong")[3].text, "oscilacao_cota": nav.find_all('b')[9].text.strip("\n").lstrip().rstrip(), "preco_min_cota": "32.40", "preco_max_cota": "33.40", "ultimo_pagamento": "04/01/2021"})
+        return jsonify(data=infoActions)
+
     else:
         infoAction["ticker"] = request.args.get("ticker").upper()
         url = requests.get(
@@ -36,7 +51,8 @@ def route():
                 infoAction["ticker"] = x["ticker"]
                 infoAction["valor_cota"] = nav.find('strong').text
                 infoAction["dy"] = nav.find_all("strong")[3].text
-                infoAction["oscilacao_cota"] = nav.find_all('b')[9].text.strip("\n").lstrip().rstrip()
+                infoAction["oscilacao_cota"] = nav.find_all(
+                    'b')[9].text.strip("\n").lstrip().rstrip()
                 infoAction["preco_min_cota"] = "32.30"
                 infoAction["preco_max_cota"] = "32.34"
                 infoAction["ultimo_pagamento"] = "04/01/2021"
@@ -113,4 +129,4 @@ def route():
 
 
 if __name__ == "__main__":
-    app.run(port=3000, host="192.168.100.106", threaded=True, debug=True)
+    app.run(port=3000, host="192.168.100.106", threaded=True)
