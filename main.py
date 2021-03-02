@@ -18,7 +18,7 @@ def route():
         url = requests.get(
             f"https://statusinvest.com.br/fundos-imobiliarios/{request.args.get('fii')}")
         nav = BeautifulSoup(url.text, "html5lib")
-
+        
         infoAction = getAllValuesFiis(nav, request.args.get("fii").upper())
         
         return jsonify(data=infoAction)

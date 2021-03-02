@@ -6,13 +6,13 @@ infoAction = {}
 dataJson = {}
 
 class BasicData():
-    def __init__(self, nameBussines: str, soup):
-        self.nameBussines = nameBussines
+    def __init__(self, soup, ticker: str): 
         self.soup = soup
+        self.ticker = ticker
 
-    def getInfoWikipedia(self, nome):
+    def getInfoWikipedia(self):
         try:
-            text = wikipedia.summary("Empresa: " + nome, 3)
+            text = wikipedia.summary("Empresa: " + infoAction["nome"], 3)
             return GoogleTranslator(
                 source="auto", target="pt").translate(text)
         except:
@@ -22,23 +22,21 @@ class BasicData():
     def getDatasInternet(self):
         infoAction["nome"] = self.soup.find("small").text 
         infoAction["logo"] = self.getImage()
-        infoAction["info"] = self.getInfoWikipedia(infoAction["nome"])
-        infoAction["ticker"] = self.nameBussines.upper()
+        infoAction["info"] = self.getInfoWikipedia()
+        infoAction["ticker"] = self.ticker.upper()
 
         return infoAction
 
     def getImage(self):
-        for x in self.soup.find_all("div"):
-            if x.get("title") == "Logotipo da empresa '" + self.nameBussines.upper() + "'":
-                try:
-                    image = x.get(
-                        "data-img").split("(")[1].split(")")[0]
-                    print("URL image: " +
-                    x.get("data-img").split("(")[1].split(")")[0])
-                    return image
-                except:
-                    print("Não deu certo pegar a IMAGEM")
-                    return "https://ik.imagekit.io/9t3dbkxrtl/image_not_work_bkTPWw2iO.png"
+        print(self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'"))
+        if self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'") != None:
+            getImage = self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'")
+            try:
+                return getImage.__str__().split("(")[1].split(")")[0]
+            except:
+                print(infoAction["nome"].upper())
+                print("Não deu certo pegar a IMAGEM")
+                return "https://ik.imagekit.io/9t3dbkxrtl/image_not_work_bkTPWw2iO.png"
             
         return "https://ik.imagekit.io/9t3dbkxrtl/image_not_work_bkTPWw2iO.png"
 
@@ -47,7 +45,7 @@ class BasicData():
         with open("data.json") as file:
                 dataJson = json.load(file)
         for x in dataJson["data"]:
-            if x["ticker"] == self.nameBussines.upper():
+            if x["ticker"] == self.ticker.upper():
                 infoAction["nome"] = x["nome"]
                 infoAction["logo"] = x["logo"]
                 infoAction["info"] = x["info"]
@@ -76,8 +74,8 @@ def getValuesMoneyBdrs(soup):
 
     return infoAction
 
-def getAllValuesBdrs(soup, nameBussines: str):
-    comandBasics = BasicData(nameBussines, soup)
+def getAllValuesBdrs(soup, ticker: str):
+    comandBasics = BasicData(soup, ticker)
     infoAction = comandBasics.getValuesLocal()
     if infoAction != None:
         infoAction = getValuesMoneyBdrs(soup)
@@ -99,8 +97,8 @@ def getValuesMoneyEtfs(soup):
 
     return infoAction
 
-def getAllValuesEtfs(soup, nameBussines: str):
-    comandBasics = BasicData(nameBussines, soup)
+def getAllValuesEtfs(soup, ticker: str):
+    comandBasics = BasicData(soup, ticker)
     infoAction = comandBasics.getValuesLocal()
     if infoAction != None:
         infoAction = getValuesMoneyEtfs(soup)
@@ -123,8 +121,8 @@ def getValuesMoneyStocks(soup):
     return infoAction
 
 
-def getAllValuesStocks(soup, nameBussines: str):
-    comandBasics = BasicData(nameBussines, soup)
+def getAllValuesStocks(soup, ticker: str):
+    comandBasics = BasicData(soup, ticker)
     infoAction = comandBasics.getValuesLocal()
     if infoAction != None:
         infoAction = getValuesMoneyStocks(soup)
@@ -146,8 +144,8 @@ def getValuesMoneyFiis(soup):
 
     return infoAction
 
-def getAllValuesFiis(soup, nameBussines: str):
-    comandBasics = BasicData(nameBussines, soup)
+def getAllValuesFiis(soup, ticker: str):
+    comandBasics = BasicData(soup, ticker)
     infoAction = comandBasics.getValuesLocal()
     if infoAction != None:
         infoAction = getValuesMoneyFiis(soup)
