@@ -28,6 +28,7 @@ class BasicData():
         return infoAction
 
     def getImage(self):
+        #print(self.soup.find("div", "company-brand w-100 w-md-30 p-3 rounded mb-3  mb-md-0 bg-lazy"))
         print(self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'"))
         if self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'") != None:
             getImage = self.soup.find("div", title="Logotipo da empresa '"+infoAction["nome"].upper()+"'")

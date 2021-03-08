@@ -3,29 +3,45 @@ import requests
 from bs4 import BeautifulSoup
 import html5lib
 from get_data import getAllValuesFiis, getAllValuesStocks, getAllValuesEtfs, getAllValuesBdrs
+from lists import fiis, bdrs, stocks, etfs
 
 app = Flask(__name__)
 
 infoAction = {}
+typeStock = ""
 
 @app.route("/", methods=["GET"])
 def route():
 
+    if request.args.get("ticker") in stocks:
+        typeStock = "stock"
+    elif request.args.get("ticker") in fiis:
+        typeStock = "fii"
+    elif request.args.get("ticker") in etfs:
+        typeStock = "etfs"
+    elif request.args.get("ticker") in bdrs:
+        typeStock = "bdrs"
+    else :
+        return {
+            'error': "ticker value is null"
+        }
+
+
 #----------------------------- FIIs ------------------------
 
-    if request.args.get("fii"):
+    if typeStock == "fii":
 
         url = requests.get(
-            f"https://statusinvest.com.br/fundos-imobiliarios/{request.args.get('fii')}")
+            f"https://statusinvest.com.br/fundos-imobiliarios/{request.args.get('ticker')}")
         nav = BeautifulSoup(url.text, "html5lib")
         
-        infoAction = getAllValuesFiis(nav, request.args.get("fii").upper())
+        infoAction = getAllValuesFiis(nav, request.args.get("ticker").upper())
         
         return jsonify(data=infoAction)
 
 #----------------------------- Stocks ------------------------
 
-    elif request.args.get('ticker') != None:
+    elif typeStock == "stock":
        
         url = requests.get(
             f"https://statusinvest.com.br/acoes/{request.args.get('ticker')}")
@@ -37,34 +53,27 @@ def route():
 
 #----------------------------- ETF ------------------------
 
-    elif request.args.get('etfs') != None:
+    elif typeStock == "etfs":
         
         url = requests.get(
-            f"https://statusinvest.com.br/etfs/{request.args.get('etfs')}")
+            f"https://statusinvest.com.br/etfs/{request.args.get('ticker')}")
         nav = BeautifulSoup(url.text, "html5lib")
 
-        infoAction = getAllValuesEtfs(nav, request.args.get("etfs").upper())
+        infoAction = getAllValuesEtfs(nav, request.args.get("ticker").upper())
 
         return jsonify(data=infoAction)
 
 # ---------------------- BDRs -------------------
 
-    elif request.args.get('bdrs') != None:
+    elif typeStock == "bdrs":
 
         url = requests.get(
-            f"https://statusinvest.com.br/bdrs/{request.args.get('bdrs').upper()}")
+            f"https://statusinvest.com.br/bdrs/{request.args.get('ticker').upper()}")
         nav = BeautifulSoup(url.text, "html5lib")
 
-        infoAction = getAllValuesBdrs(nav, request.args.get('bdrs'))
+        infoAction = getAllValuesBdrs(nav, request.args.get('ticker'))
 
         return jsonify(data=infoAction)
-
-#----------------------------- ERROR ------------------------
-
-    elif request.args.get('ticker') and request.args.get('fii') and request.args.get('bdrs') and request.args.get('etf')  == None:
-        return {
-            'error': "ticker value is null"
-        }
 
 if __name__ == "__main__":
     app.run(port=3000, host="192.168.100.106", threaded=True)
