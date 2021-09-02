@@ -10,6 +10,9 @@ class BasicData():
         self.soup = soup
         self.ticker = ticker
 
+    def getValuesLocal(self):
+        return None
+
     def getInfoWikipedia(self):
         try:
             text = wikipedia.summary("Empresa: " + infoAction["nome"], 3)
@@ -41,26 +44,26 @@ class BasicData():
             
         return "https://ik.imagekit.io/9t3dbkxrtl/image_not_work_bkTPWw2iO.png"
 
-    def getValuesLocal(self):
-        global dataJson
-        with open("data.json") as file:
-                dataJson = json.load(file)
-        for x in dataJson["data"]:
-            if x["ticker"] == self.ticker.upper():
-                infoAction["nome"] = x["nome"]
-                infoAction["logo"] = x["logo"]
-                infoAction["info"] = x["info"]
-                infoAction["ticker"] = x["ticker"]
-
-                return infoAction
-        return None
-
     def writeData(self, infoAction):
         global dataJson
-        if self.getValuesLocal() == None:
+        atualizado = False
+        with open("data.json", "r") as file:
+            dataJson = json.load(fp=file)
+        for x in range(1, len(dataJson["data"])):
+            if dataJson["data"][x]["ticker"] == infoAction["ticker"]:
+                dataJson["data"][x] = infoAction
+                if str(infoAction["logo"]).__contains__("ik.imagekit.io"):
+                    dataJson["data"][x]["logo"] = infoAction["logo"]
+                else:
+                    dataJson["data"][x]["logo"] = "https://www.statusinvest.com.br" + infoAction["logo"]
+                atualizado = True
+                with open("data.json", "w") as file:
+                    json.dump(dataJson, file)
+        if not atualizado:
             dataJson["data"].insert(0, infoAction)
             with open("data.json", "w") as file:
-                json.dump(dataJson, file)       
+                json.dump(dataJson, file)
+
         return infoAction
 
 #------------------------------------------
@@ -77,12 +80,9 @@ def getValuesMoneyBdrs(soup):
 
 def getAllValuesBdrs(soup, ticker: str):
     comandBasics = BasicData(soup, ticker)
-    infoAction = comandBasics.getValuesLocal()
-    if infoAction != None:
-        infoAction = getValuesMoneyBdrs(soup)
-    else:
-        infoAction = comandBasics.getDatasInternet()
-        infoAction = getValuesMoneyBdrs(soup)
+
+    comandBasics.getDatasInternet()
+    infoAction = getValuesMoneyBdrs(soup)
     comandBasics.writeData(infoAction)
     return infoAction
 
@@ -100,12 +100,8 @@ def getValuesMoneyEtfs(soup):
 
 def getAllValuesEtfs(soup, ticker: str):
     comandBasics = BasicData(soup, ticker)
-    infoAction = comandBasics.getValuesLocal()
-    if infoAction != None:
-        infoAction = getValuesMoneyEtfs(soup)
-    else:
-        infoAction = comandBasics.getDatasInternet()
-        infoAction = getValuesMoneyEtfs(soup)
+    comandBasics.getDatasInternet()
+    infoAction = getValuesMoneyEtfs(soup)
     comandBasics.writeData(infoAction)
     return infoAction
 
@@ -124,12 +120,8 @@ def getValuesMoneyStocks(soup):
 
 def getAllValuesStocks(soup, ticker: str):
     comandBasics = BasicData(soup, ticker)
-    infoAction = comandBasics.getValuesLocal()
-    if infoAction != None:
-        infoAction = getValuesMoneyStocks(soup)
-    else:
-        infoAction = comandBasics.getDatasInternet()
-        infoAction = getValuesMoneyStocks(soup)
+    comandBasics.getDatasInternet()
+    infoAction = getValuesMoneyStocks(soup)
     comandBasics.writeData(infoAction)
     return infoAction
 
@@ -147,11 +139,7 @@ def getValuesMoneyFiis(soup):
 
 def getAllValuesFiis(soup, ticker: str):
     comandBasics = BasicData(soup, ticker)
-    infoAction = comandBasics.getValuesLocal()
-    if infoAction != None:
-        infoAction = getValuesMoneyFiis(soup)
-    else:
-        infoAction = comandBasics.getDatasInternet()
-        infoAction = getValuesMoneyFiis(soup)
+    comandBasics.getDatasInternet()
+    infoAction = getValuesMoneyFiis(soup)
     comandBasics.writeData(infoAction)
     return infoAction
