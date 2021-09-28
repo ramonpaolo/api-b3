@@ -1,8 +1,5 @@
 import sqlite3
-from logging import info
-
 import wikipedia
-import json
 from deep_translator import GoogleTranslator
 
 infoAction = {}

@@ -6,7 +6,7 @@ def updateCryptos():
     connectionCrypto = ConnectionDBCryptoCurrencies()
 
     # Troque a chave de acesso pela sua. https://developers.coinranking.com/account/
-    response = requests.get("https://api.coinranking.com/v2/coins", params={'x-access-token': 'coinranking90687c0a61cd61c1a66f98054704d4ec9beb68f94d67deab'})
+    response = requests.get("https://api.coinranking.com/v2/coins", params={'x-access-token': 'API_KEY'})
     parsed = json.loads(response.text)
     coins = parsed["data"]["coins"]
 
@@ -19,9 +19,8 @@ def updateCryptos():
         print(f"rank: {x['rank']}")
         print(f"btcPrice: {x['btcPrice']} \n")
         connectionCrypto.updateValues(x)
-
         #Se for sua primeira vez executando, execute primeiro a inserção de dados na tabela
-        #connection.addValuesCryptos(x)
+        #connectionCrypto.addValues(x)
 
     connectionCrypto.db.commit()
     connectionCrypto.db.close()

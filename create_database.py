@@ -1,14 +1,8 @@
 import sqlite3
+from connections_db.connections_cryptocurrencies import ConnectionDBCryptoCurrencies
 
-db = sqlite3.connect("database/database.db")
+dbTickers = sqlite3.connect("database/tickers.db")
+dbTickers.execute("create table dataStock(nome text, logo text, info text, ticker text, dy number, precoMinimoCotaEmUmAno number, precoMaximoCotaEmUmAno number, dividendoEmUmAno number, oscilacaoCota number, valorCota number ,linkSiteRi text, valorizacaoCotaUmAno number, cnpj text);")
+dbTickers.commit()
 
-db.execute("""
-create table alertsPrices(
-id integer not null primary key autoincrement,
-ticker text,
-alertPrice real,
-referenceDocUser text,
-validity text,
-created text,
-direction text
-);""")
+ConnectionDBCryptoCurrencies().createTable()

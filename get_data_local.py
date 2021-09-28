@@ -1,10 +1,6 @@
-import json
 import sqlite3
 
 class DataLocal():
-    def __init__(self):
-        print("...")
-
     def getData(self, ticker: str):
         db = sqlite3.connect("./database/tickers.db")
         data = db.execute(f"select * from dataStock where ticker='{ticker.upper()}'").fetchall()
