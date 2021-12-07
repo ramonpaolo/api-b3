@@ -1,12 +1,16 @@
 import json
 import requests
 from connections_db.connections_cryptocurrencies import ConnectionDBCryptoCurrencies
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
 
 def updateCryptos():
     connectionCrypto = ConnectionDBCryptoCurrencies()
 
     # Troque a chave de acesso pela sua. https://developers.coinranking.com/account/
-    response = requests.get("https://api.coinranking.com/v2/coins", params={'x-access-token': 'API_KEY'})
+    response = requests.get("https://api.coinranking.com/v2/coins", params={'x-access-token': os.getenv("API_KEY")})
     parsed = json.loads(response.text)
     coins = parsed["data"]["coins"]
 
