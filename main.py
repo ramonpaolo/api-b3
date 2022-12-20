@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
-from get_data_local import DataLocal
-from get_price_cryptocurrencies import getValueCryptos
+from src.get_data_local import DataLocal
+from src.get_price_cryptocurrencies import getValueCryptos
 
 app = FastAPI(debug=False)
 
