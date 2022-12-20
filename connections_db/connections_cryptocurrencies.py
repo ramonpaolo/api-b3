@@ -1,9 +1,7 @@
 import sqlite3
-import os
 
 class ConnectionDBCryptoCurrencies():
     def __init__(self):
-        #print(os.system("dir"))
         self.db = sqlite3.connect("database/cryptos.db")
 
     def createTable(self):
