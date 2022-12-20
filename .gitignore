@@ -1,0 +1,6 @@
+# Folders
+venv/
+database/
+
+/**/.idea/
+/**/__pycache__/
