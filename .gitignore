@@ -1,6 +1,7 @@
 # Folders
 venv/
 database/
+assets/
 
 /**/.idea/
 /**/__pycache__/
