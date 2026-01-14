@@ -1,0 +1,67 @@
+name: CI/CD STG
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    timeout-minutes: 3
+    name: build
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+      actions: read
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Config QEMU
+        uses: docker/setup-qemu-action@v3.2.0
+        with:
+          platforms: linux/amd64
+
+      - name: Config Docker Buildx
+        uses: docker/setup-buildx-action@v3.7.1
+        with:
+          platforms: linux/amd64
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and Publish Image to Docker Hub
+        run: |
+          docker build -t r4deu51/api-b3:${{ github.sha }} .
+          docker tag r4deu51/api-b3:${{ github.sha }} docker.io/r4deu51/api-b3:${{ github.sha }}
+          docker push docker.io/r4deu51/api-b3:${{ github.sha }}
+
+  # ============================================
+  # DEPLOY
+  # ============================================
+  deploy:
+    timeout-minutes: 1
+    needs: build
+    name: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      actions: read
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Deploy Image
+        uses: ramonpaolo/action-zenifra@main
+        with:
+          PROJECT_ID: ${{ secrets.ZENIFRA_PROJECT_ID_STG }}
+          API_KEY: ${{ secrets.ZENIFRA_API_KEY_STG }}
+          IMAGE: docker.io/r4deu51/api-b3:${{ github.sha }}
